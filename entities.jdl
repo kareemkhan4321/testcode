@@ -1,0 +1,83 @@
+
+application {
+  config {
+    baseName Regulatory,
+    applicationType monolith,
+    packageName com.thalesgroup.ifec.regulatorymanager,
+    authenticationType jwt,
+    databaseType sql,
+    devDatabaseType mssql
+    prodDatabaseType mssql,
+    clientFramework angularX,
+    enableTranslation	false,
+    languages [en],
+    testFrameworks [cucumber],
+    skipUserManagement true
+  }
+  entities *
+}
+
+/**
+ * Country
+ */
+
+entity Country {
+    
+    /** Country code (per ISO 3166-1 alpha-2) */
+    code String unique required pattern(/^[A-Z0-9]{2}$/)
+    
+    /** Country name (English per ISO 3166-1 alpha-2) */
+    name String required 
+    
+    /** Continent **/
+    continent String required 
+}
+
+entity FlightPhase {
+
+    description String
+}
+entity ServiceCategory {
+
+  name String
+  description String  
+  
+}
+
+entity ServiceType {
+    serviceTypeName String
+    serviceTypeDescription String    
+
+  
+}
+
+entity ServiceStatus {
+
+  status ServiceStatusType
+  comments String
+  modificationDate LocalDate required
+  
+}
+enum ServiceStatusType{
+ALLOWED,
+RESTRICTED,
+IN_PROGRESS
+}
+
+relationship OneToMany {
+
+   
+   Country{country} to ServiceStatus
+   FlightPhase{flightphase} to ServiceStatus
+   ServiceType{servicetype} to ServiceStatus   
+   ServiceCategory{servicetype} to ServiceType
+   
+}
+
+
+
+
+
+
+
+    
